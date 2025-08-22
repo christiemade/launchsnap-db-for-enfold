@@ -1,0 +1,15 @@
+# Messaggio Enfold
+msgid "Enfold Message"
+msgstr "Enfold Message"
+
+# Pagina
+msgid "Page"
+msgstr "Page"
+
+# Contact Time
+msgid "Form Filled Out:"
+msgstr "Form Filled Out:"
+
+# Supporto
+msgid "For support or specific requests contact:"
+msgstr "For support or specific requests contact:"
