@@ -1,9 +1,9 @@
 === LaunchSnap's Form DB for Enfold ===
 Tags: enfold, enfold contact form, enfold module contact, enfold by kriesi,
-Requires at least: 4.8
-Tested up to: 5.2.4
+Requires at least: 5.1
+Tested up to: 6.5.1
 Requires PHP: 7.1.16
-Stable tag: 2.0.2
+Stable tag: 1.0.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -22,22 +22,8 @@ Save the information compiled by the users of your website on Enfold Contact For
 == Installation ==
 
 1. Upload the plugin files to the `/wp-content/plugins/launchsnap-db-for-enfold` directory, or install the plugin through the WordPress plugins screen directly.
-2. Activate Contact Form DB for Enfold through the 'Plugins' screen in WordPress
-3. Use the Enfold Contact Form panel in the Settings Panel to display the contact form infos.
+2. Activate Launchsnap DB for Enfold through the 'Plugins' screen in WordPress
+3. Use the Form Entries panel in the Dashboard to display the contact form entries.
 
 == Changelog ==
 
-= 1.0.5 =
-* Created translations for the info panel
-
-= 1.0.8 =
-* Added contact footer at the bottom of the info panel
-
-= 2.0 =
-* Major changes in database and info panel structure
-
-= 2.0.1 =
-* Updated translations for the new panel structure
-
-= 2.0.2 =
-* Minor bugfix

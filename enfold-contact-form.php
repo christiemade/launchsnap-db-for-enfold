@@ -7,13 +7,18 @@ Author: Christie Wood
 Author URI: https://launchsnap.com
 */
 
-function ecf_load_textdomain()
-{
-	$plugin_rel_path = basename( dirname( __FILE__ ) ) . '/languages';
-	load_plugin_textdomain( 'ecf', false, $plugin_rel_path );
+// If this file is called directly, abort.
+if ( ! defined( 'WPINC' ) ) {
+	die;
 }
-add_action('plugins_loaded', 'ecf_load_textdomain');
 
+if(!defined('LSE_TEXT_DOMAIN')){
+	define('LSE_TEXT_DOMAIN','launchsnap-db-for-enfold');
+}
+
+define('LSE_DATA_ENTRY_TABLE_NAME', $wpdb->prefix.'ecf');
+
+require_once(ABSPATH . 'wp-admin/includes/file.php');
 
 function ecf_activated() {
 
@@ -47,12 +52,28 @@ $EnfoldListDb = new ECF_ListDb();
 
 include 'admin/ecf_index.php';
 
+/**
+ * The core plugin class that is used to define internationalization,
+ * admin-specific hooks, and public-facing site hooks.
+ */
+require plugin_dir_path( __FILE__ ) . 'includes/class-launchsnap-db-for-enfold.php';
 
+/**
+ * Begins execution of the plugin.
+ *
+ * Since everything within the plugin is registered via hooks,
+ * then kicking off the plugin from this point in the file does
+ * not affect the page life cycle.
+ *
+ * @since    1.0.0
+ */
+function run_launchsnap_db() {
 
-function ecf_add_option_page(){
-    add_options_page('ECF DB', 'Form Entries', 'administrator', 'ecf-db-page', 'ecf_index');
+	$plugin = new Launchsnap_Db();
+	$plugin->run();
+
 }
-add_action('admin_menu', 'ecf_add_option_page');
+run_launchsnap_db();
 
 add_theme_support('avia_template_builder_custom_css');
 

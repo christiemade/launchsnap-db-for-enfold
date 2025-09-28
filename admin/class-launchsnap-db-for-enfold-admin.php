@@ -78,7 +78,6 @@ class Launchsnap_Db_Admin
 		///// Menu pages for contact form DB
 		$user_id = get_current_user_id();
 		$subject = new WP_User($user_id);
-		$cap = 'edit_posts';
 
 		//check current user view capability access
 		if (in_array("administrator", $subject->roles, true)) {
@@ -189,13 +188,13 @@ function lse_export_to_csv($fid, $ids_export = '')
 		header('Content-Disposition: attachment;filename="' . $form_title . '.csv";');
 		$fp = fopen('php://output', 'w');
 		fputs($fp, "\xEF\xBB\xBF");
-		fputcsv($fp, array_values(array_map('sanitize_text_field', $fields)));
+		fputcsv($fp, array_values(array_map('sanitize_text_field', $fields)),",","\"","\\");
 		foreach ($data_sorted as $k => $v) {
 			$temp_value = array();
 			foreach ($fields as $k2 => $v2) {
 				$temp_value[] = ((isset($v[$k2])) ? html_entity_decode($v[$k2]) : '');
 			}
-			fputcsv($fp, $temp_value);
+			fputcsv($fp, $temp_value,",","\"","\\");
 		}
 
 		fclose($fp);
