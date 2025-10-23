@@ -77,9 +77,10 @@ run_launchsnap_db();
 
 add_theme_support('avia_template_builder_custom_css');
 
+add_filter( 'wpcf7_posted_data', 'ecf_cf7_saveFormData' );
 add_filter('avf_form_send', 'ecf_saveFormData', 10, 4);
 
-function ecf_saveFormData($bool, $new_post, $form_params, $avia_form)
+function ecf_saveFormData($data, $new_post, $form_params, $avia_form)
 {
 	global $wpdb;
 
@@ -106,6 +107,30 @@ function ecf_saveFormData($bool, $new_post, $form_params, $avia_form)
 	$wpdb->get_results("INSERT INTO {$wpdb->prefix}ecf SET page='{$page_title}', complete='{$contact_value}', contact_time ='{$contact_time}'");
 
   return true;
+}
+
+
+
+// Save submissions from CF7
+function ecf_cf7_saveFormData($form_elements)
+{
+	global $wpdb;
+	$contact_value = array();
+	foreach ($form_elements as $key=>$element)
+	{
+		if(is_array($element)) $element = json_encode($element);
+		$contact_value[$key] = $element;
+	}
+	error_log(json_encode($contact_value));
+	$page_title = $contact_value['page_title'];
+	error_log("Element (".gettype($element)."): ".json_encode($element));
+	//$page_title = get_the_title(url_to_postid($form_params['action']));
+	$contact_value = base64_encode(maybe_serialize($contact_value));
+
+	$contact_time = date('Y-m-d H:i:s e');
+	$wpdb->get_results("INSERT INTO {$wpdb->prefix}ecf SET page='{$page_title}', complete='{$contact_value}', contact_time ='{$contact_time}'");
+
+  return $form_elements;
 }
 
 ?>
