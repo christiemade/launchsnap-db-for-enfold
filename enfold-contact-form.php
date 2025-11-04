@@ -84,6 +84,7 @@ function ecf_saveFormData($data, $new_post, $form_params, $avia_form)
 {
 	global $wpdb;
 
+	//info@bocillaislandsconservancy.org
 	$form_elements = $avia_form->form_elements;
 	$parameters = array_values($new_post);
 	foreach ($form_elements as $name => $element)
@@ -101,6 +102,9 @@ function ecf_saveFormData($data, $new_post, $form_params, $avia_form)
 		$i++;
 	}
 	$page_title = get_the_title(url_to_postid($form_params['action']));
+	if(isset($form_elements['page_title'])) {
+		$page_title = ucwords($form_elements['page_title']['value']);
+	}
 	$contact_value = base64_encode(maybe_serialize($contact_value));
 
 	$contact_time = date('Y-m-d H:i:s e');
