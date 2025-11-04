@@ -10,7 +10,7 @@ function lse_get_the_form_list($fid = '')
 
 	global $wpdb;
 
-	$select = "SELECT p.ID, p.post_title FROM wp_posts p INNER JOIN wp_postmeta m ON m.post_ID = p.ID WHERE m.meta_key = '_aviaLayoutBuilderCleanData' AND m.meta_value LIKE '%[av_contact%' AND p.post_status = 'publish'";
+	$select = "SELECT page AS post_title, MIN(id) AS ID FROM wp_ecf GROUP BY page;";
 	$result = $wpdb->get_results($select, ARRAY_A);
 
 	if (sizeof($result)) {

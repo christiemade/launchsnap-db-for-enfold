@@ -10,10 +10,16 @@ class ECF_ListDb {
 			return $this->results = $results;
     }
 
-    function postTitle($title) {
+    function postTitle($fid) {
       global $wpdb;
 
-			$results = $wpdb->get_results("SELECT * FROM {$wpdb->prefix}ecf WHERE `page` = '{$title}'");
+			$results = $wpdb->get_results("SELECT *
+        FROM {$wpdb->prefix}ecf
+        WHERE page = (
+            SELECT page
+            FROM {$wpdb->prefix}ecf
+            WHERE id = $fid
+        )");
 
 			return $this->results = $results;
     }

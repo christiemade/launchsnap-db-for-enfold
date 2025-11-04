@@ -27,10 +27,10 @@ function ecf_index(){
 	//Get selected Form Page Id value
 	if(isset($_GET['fp_id']) && !empty($_GET['fp_id'])){
 		$fid = intval(sanitize_text_field($_GET['fp_id']));
-		$results = $GLOBALS['EnfoldListDb']->postTitle(get_the_title($fid));
+		$results = $GLOBALS['EnfoldListDb']->postTitle($fid);
 	} else {
 		$results = $GLOBALS['EnfoldListDb']->all(); 
-		$fid = $wpdb->get_var( "SELECT ID FROM $wpdb->posts WHERE post_title = '".$results[0]->page."'" );
+		$fid = $wpdb->get_var( "SELECT id FROM $wpdb->ecf WHERE page = '".$results[0]->page."'" );
 	}
 
 	//Get all form names which entry store in DB
@@ -176,8 +176,6 @@ function ecf_index(){
 							?></tbody>
 							<tfoot>
 								<tr><?php
-									//Setup header section in table footer area
-									echo '<td class="manage-column column-cb check-column"><input type="checkbox" id="cb-select-all-2" /></td>';
 									foreach ($fields as $k => $v){
                                         // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 										echo '<th class="manage-column" data-key="'.esc_html($v).'">'.$v.'</th>';
