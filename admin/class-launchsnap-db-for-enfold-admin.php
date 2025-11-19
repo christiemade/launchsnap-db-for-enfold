@@ -157,16 +157,6 @@ class Launchsnap_Db_Admin
 		 */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-launchsnap-enfold-form-fields.php';
 	}
-
-	public function lse_avia_form_callback() {
-    if ( class_exists('avia_form') && isset($GLOBALS['avia_last_form']) ) {
-        $form = $GLOBALS['avia_last_form'];
-        $args = $form->form_args;
-        // you can modify $form->form_elements here before display
-				error_log("Modify form elements before display.");
-				error_log(json_encode($args));
-    }
-	}
 }
 
 /**
@@ -339,8 +329,3 @@ function create_lse_export_query($fid, $ids_export)
 	//Return result set
 	return $data;
 }//Close export query function
-
-add_filter( 'avia_contact_form_args', function( $args, $post_id ) {
-	error_log( 'Args keys: ' . implode( ',', array_keys( (array) $args ) ) );
-	return $args;
-}, 10, 2 );

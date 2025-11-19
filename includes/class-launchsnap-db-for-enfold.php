@@ -140,7 +140,7 @@ class Launchsnap_Db {
 		$this->loader->add_action('after_setup_theme', $plugin_admin,'lse_form_class',20);
 
 		//Check form fields to label the submission properly
-		$this->loader->add_action('wp_footer', $plugin_admin,'lse_avia_form_callback');
+		//$this->loader->add_action('wp_footer', $plugin_admin,'lse_avia_form_callback');
 	}
 
 

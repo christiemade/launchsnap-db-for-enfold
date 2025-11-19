@@ -134,8 +134,7 @@ function ecf_index(){
 						<br class="clear">
 					</div>
 				</div>
-				<?php 
-	error_log(json_encode($data_sorted)); ?>
+
 				<div class="span12 table-structure">
 					<div class="table-inner-structure">
 						<table class="wp-list-table widefat fixed striped posts">
@@ -144,6 +143,7 @@ function ecf_index(){
 									//Define table header section here
 									$fields = maybe_unserialize(base64_decode($data_sorted[0]->complete));
 									$fields = array_keys($fields);
+									$fields[] = __('Time');
 							
 									foreach ($fields as $k => $v){
 										echo '<th class="manage-column" data-key="'.esc_html($v).'">'.$v.'</th>';
@@ -162,6 +162,7 @@ function ecf_index(){
 
 											echo '<td data-head="">'. $v2. '</td>';
 										}//Close foreach
+										echo '<td data-head="">'. $v->contact_time. '</td>';
 										echo '</tr>';
 									}//Close foreach
 								}

@@ -61,7 +61,7 @@ function lse_get_db_fields($fid, $filter = true)
 	$fid = (int) $fid;
 	$page_title = get_the_title($fid);
 
-	$sql = $wpdb->get_results($wpdb->prepare("SELECT `complete` FROM {$wpdb->prefix}ecf WHERE page = %s", $page_title));
+	$sql = $wpdb->get_results($wpdb->prepare("SELECT `complete`, `contact_time` FROM {$wpdb->prefix}ecf WHERE page = %s", $page_title));
 	$data = $sql;
 
 	//Set each field value in array

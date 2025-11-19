@@ -125,10 +125,8 @@ function ecf_cf7_saveFormData($form_elements)
 		if(is_array($element)) $element = json_encode($element);
 		$contact_value[$key] = $element;
 	}
-	error_log(json_encode($contact_value));
+
 	$page_title = $contact_value['page_title'];
-	error_log("Element (".gettype($element)."): ".json_encode($element));
-	//$page_title = get_the_title(url_to_postid($form_params['action']));
 	$contact_value = base64_encode(maybe_serialize($contact_value));
 
 	$contact_time = date('Y-m-d H:i:s e');
