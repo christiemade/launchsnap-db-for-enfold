@@ -53,17 +53,22 @@ function lse_sortdata($data)
 	return $data_sorted;
 }
 
+function lse_get_the_title($fid) {
+	global $wpdb;
+	$fid = (int) $fid;
+	$page_title = $wpdb->get_var($wpdb->prepare("SELECT `page` FROM {$wpdb->prefix}ecf WHERE id = %d", $fid));
+	return $page_title;
+}
+
 // Pull fields out of form settings
 function lse_get_db_fields($fid, $filter = true)
 {
 
 	global $wpdb;
 	$fid = (int) $fid;
-	$page_title = get_the_title($fid);
-
+	$page_title = lse_get_the_title($fid);
 	$sql = $wpdb->get_results($wpdb->prepare("SELECT `complete`, `contact_time` FROM {$wpdb->prefix}ecf WHERE page = %s", $page_title));
 	$data = $sql;
-
 	//Set each field value in array
 	$fields = array();
 	if (!empty($data)) {

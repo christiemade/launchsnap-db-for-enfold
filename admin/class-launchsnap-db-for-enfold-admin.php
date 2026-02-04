@@ -145,18 +145,6 @@ class Launchsnap_Db_Admin
 			}//Close switch
 		}//Close if for export
 	}//Close admin_init hook function
-
-	public function lse_form_class() {
-
-    if ( ! class_exists( 'avia_form' ) ) {
-        return; // Enfold not ready yet, or not active
-    }
-
-		/**
-		 * Additional class to overwrite Enfold form field generation
-		 */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-launchsnap-enfold-form-fields.php';
-	}
 }
 
 /**
@@ -183,10 +171,12 @@ function lse_export_to_csv($fid, $ids_export = '')
 	if (empty($fid)) {
 		return esc_html('You do not have the permission to export the data');
 	}
+
+	error_log("Did we make it to the CSV export function with ".$fid. "?");
 	$fields = lse_get_db_fields($fid);
 
 	//get current form title
-	$form_title = get_the_title($fid);
+	$form_title = lse_get_the_title($fid);
 
 	//Get export data
 	$data = create_lse_export_query($fid, $ids_export);
@@ -243,7 +233,7 @@ function lse_export_to_excel($fid, $ids_export)
 	$fields = lse_get_db_fields($fid);
 
 	//get current form title
-	$form_title = get_the_title($fid);
+	$form_title = lse_get_the_title($fid);
 
 	//Get export data
 	$data = create_lse_export_query($fid, $ids_export);
@@ -313,7 +303,7 @@ function create_lse_export_query($fid, $ids_export)
 
 	global $wpdb;
 	$fid = intval($fid);
-	$page_title = get_the_title($fid);
+	$page_title = lse_get_the_title($fid);
 
 	$query = "SELECT * FROM `" . LSE_DATA_ENTRY_TABLE_NAME . "` WHERE `page` = '" . $page_title . "' AND id IN(
 						SELECT * FROM (

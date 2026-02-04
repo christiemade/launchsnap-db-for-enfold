@@ -137,7 +137,7 @@ class Launchsnap_Db {
 		$this->loader->add_action('admin_init', $plugin_admin,'lse_save_setting_callback');
 
 		//Create our own class for forms
-		$this->loader->add_action('after_setup_theme', $plugin_admin,'lse_form_class',20);
+		//$this->loader->add_action('after_setup_theme', $plugin_admin,'lse_form_class',20);
 
 		//Check form fields to label the submission properly
 		//$this->loader->add_action('wp_footer', $plugin_admin,'lse_avia_form_callback');

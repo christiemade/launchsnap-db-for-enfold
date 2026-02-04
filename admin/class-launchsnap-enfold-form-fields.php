@@ -1,5 +1,7 @@
 <?php
 
+// Not in use
+
 class launchsnap_db_form extends avia_form {
 
   public function __construct( $params = [] ) {
@@ -7,6 +9,8 @@ class launchsnap_db_form extends avia_form {
   }
 
   public function create_elements( $form_fields  ) {
+    error_log("Make sure we got in here.");
+    error_log(json_encode($form_fields));
     if ( ! empty( $this->form_params['el-id'] ) ) {
       $custom_id = str_replace('id="','', $this->form_params['el-id']);
       $custom_id = str_replace('"','',$custom_id);
