@@ -3,7 +3,7 @@
 /**
  * Register all actions and filters for the plugin
  *
- * @link       https://launchsnap.com
+ * @link       https://christiemade.com
  * @since      1.0.0
  *
  * @package    Launchsnap_Db

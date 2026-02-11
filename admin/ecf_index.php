@@ -30,7 +30,7 @@ function ecf_index(){
 		$results = $GLOBALS['EnfoldListDb']->postTitle($fid);
 	} else {
 		$results = $GLOBALS['EnfoldListDb']->all(); 
-		$fid = $wpdb->get_var( "SELECT id FROM $wpdb->ecf WHERE page = '".$results[0]->page."'" );
+		$fid = $wpdb->get_var( "SELECT id FROM {$wpdb->prefix}ecf WHERE page = '".$results[0]->page."'" );
 	}
 
 	//Get all form names which entry store in DB
@@ -39,26 +39,27 @@ function ecf_index(){
 
 	?><div class="wrap">
 		<h2><?php
-			esc_html_e('View Form Information',LSE_TEXT_DOMAIN);
+			esc_html_e('View Form Information', 'launchsnap-db-for-enfold');
 		?></h2>
 	</div>
 	<div class="wrap select-specific">
 		<table class="form-table inner-row">
 			<tr class="form-field form-required select-form">
-				<th><?php esc_html_e('Select Form name',LSE_TEXT_DOMAIN);  ?></th>
+				<th><?php esc_html_e('Select Form name','launchsnap-db-for-enfold');  ?></th>
 				<td><?php $fid = (string)trim($fid) ?>
 					<form name="fp_name" id="fp_name" action="<?php menu_page_url('form-contacts');?>" method="">
 						<select name="fp_id" id="fp_id" onchange="submit_lse()">
-							<option value=""><?php esc_html_e('Select Form name',LSE_TEXT_DOMAIN);  ?></option><?php
+							<option value=""><?php esc_html_e('Select Form name','launchsnap-db-for-enfold');  ?></option>
+							<?php
 							//Display all existing form list here
 							if(!empty($form_list)){
 
 								foreach($form_list as $formInfo){
 									$exist_entry_flag = true;
+									?><option value="<?php echo esc_html( $formInfo['ID'] ); ?>" <?php
 									if(!empty($fid) && $fid === $formInfo['ID'])
-										print '<option value="'.$formInfo['ID'].'" selected>'.esc_html($formInfo['post_title']).'</option>';
-									else
-										print '<option value="'.$formInfo['ID'].'" >'.esc_html($formInfo['post_title']).'</option>';
+										print ' selected';
+									?> ><?php echo esc_html( $formInfo['post_title'] ); ?></option><?php
 								}//close for each
 							}//close if
 						?></select>
@@ -104,8 +105,8 @@ function ecf_index(){
 							do_action('lse_after_bulkaction_btn', $fid);
 							?><div class="tablenav-pages">
 								<span class="displaying-num"><?php echo (($total == 1) ?
-								'1 ' . esc_html('item') :
-								$total . ' ' . esc_html('items')) ?></span>
+								'1 ' . esc_html('item','launchsnap-db-for-enfold') :
+								 esc_html( $total,'launchsnap-db-for-enfold') . ' ' . esc_html('items')) ?></span>
 
 								<span class="pagination-links"><?php
 									//Setup pagination structure
@@ -118,14 +119,16 @@ function ecf_index(){
 									// Build the base URL with all preserved args
 									$base = add_query_arg( 'cpage', '%#%', admin_url( 'admin.php?page=form-contacts' ) );
 
-									echo paginate_links( array(
+									$nav = paginate_links( array(
 										'base'      => $base,
 										'format'    => '', // leave empty, we're already handling it in base
-										'prev_text' => __('&laquo;'),
-										'next_text' => __('&raquo;'),
+										'prev_text' => __('&laquo;', 'launchsnap-db-for-enfold'),
+										'next_text' => __('&raquo;', 'launchsnap-db-for-enfold'),
 										'total'     => ceil($total / $items_per_page),
 										'current'   => $page,
 									) );
+
+									echo $nav;
 
 
 								?></span>
@@ -143,10 +146,10 @@ function ecf_index(){
 									//Define table header section here
 									$fields = maybe_unserialize(base64_decode($data_sorted[0]->complete));
 									$fields = array_keys($fields);
-									$fields[] = __('Time');
+									$fields[] = __('Time', 'launchsnap-db-for-enfold');
 							
 									foreach ($fields as $k => $v){
-										echo '<th class="manage-column" data-key="'.esc_html($v).'">'.$v.'</th>';
+										echo '<th class="manage-column" data-key="'.esc_html($v,'launchsnap-db-for-enfold').'">'.esc_html($v,'launchsnap-db-for-enfold').'</th>';
 									}
 								?></tr>
 							</thead>
@@ -160,9 +163,9 @@ function ecf_index(){
 										$fieldnames = maybe_unserialize(base64_decode($v->complete));
 										foreach ($fieldnames as $k2 => $v2) {
 
-											echo '<td data-head="">'. $v2. '</td>';
+											echo '<td data-head="">'. esc_html($v2,'launchsnap-db-for-enfold'). '</td>';
 										}//Close foreach
-										echo '<td data-head="">'. $v->contact_time. '</td>';
+										echo '<td data-head="">'. esc_html($v->contact_time,'launchsnap-db-for-enfold'). '</td>';
 										echo '</tr>';
 									}//Close foreach
 								}
@@ -170,7 +173,7 @@ function ecf_index(){
 									?><tr><?php
 										$span = count($fields) + 2;
 										?><td colspan="<?php echo esc_html($span); ?>">
-											<?php esc_html_e('No records found.',LSE_TEXT_DOMAIN);  ?>
+											<?php esc_html_e('No records found.','launchsnap-db-for-enfold');  ?>
 										</td><?php
 									?></tr><?php
 								}
@@ -179,7 +182,7 @@ function ecf_index(){
 								<tr><?php
 									foreach ($fields as $k => $v){
                                         // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-										echo '<th class="manage-column" data-key="'.esc_html($v).'">'.$v.'</th>';
+										echo '<th class="manage-column" data-key="'.esc_html($v,'launchsnap-db-for-enfold').'">'.esc_html($v,'launchsnap-db-for-enfold').'</th>';
 									}
 								?></tr>
 							</tfoot>
@@ -188,9 +191,9 @@ function ecf_index(){
 				</div>
 
 				<input type="hidden" name="cpage" value="<?php echo intval($page);?>" id="cpage">
-				<input type="hidden" name="totalPage" value="<?php // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped  print ceil($total / $items_per_page);?>" id="totalPage">
+				<input type="hidden" name="totalPage" value="" id="totalPage">
 				<?php $list_nonce = wp_create_nonce( 'lse-form-list-nonce' ); ?>
-				<input type="hidden" name="lse_form_list_nonce"  value="<?php esc_html_e($list_nonce); ?>" />
+				<input type="hidden" name="lse_form_list_nonce"  value="<?php esc_html_e($list_nonce,'launchsnap-db-for-enfold'); ?>" />
 				
 			</form>
 			<?php else: ?>
