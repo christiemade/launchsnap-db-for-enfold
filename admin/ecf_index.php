@@ -12,6 +12,7 @@ include_once( ABSPATH . 'wp-admin/includes/plugin.php' );
 function ecf_index(){  
   global $wpdb;
 	wp_enqueue_script('launchsnap_db_admin_js');
+	$table = $wpdb->prefix . 'ecf';
 
 	//Get all existing contact form list
 	$form_list = lse_get_the_form_list();
@@ -30,7 +31,8 @@ function ecf_index(){
 		$results = $GLOBALS['EnfoldListDb']->postTitle($fid);
 	} else {
 		$results = $GLOBALS['EnfoldListDb']->all(); 
-		$fid = $wpdb->get_var( "SELECT id FROM {$wpdb->prefix}ecf WHERE page = '".$results[0]->page."'" );
+		error_log("SELECT id FROM $table WHERE page = '".$results[0]->page."'");
+		$fid = $wpdb->get_var( "SELECT id FROM $table WHERE page = '".$results[0]->page."'" );
 	}
 
 	//Get all form names which entry store in DB
