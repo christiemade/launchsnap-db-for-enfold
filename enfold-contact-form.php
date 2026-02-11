@@ -1,19 +1,16 @@
 <?php
 /*
 Plugin Name: Launchsnap DB for Enfold
-Version: 2.0.2
+Version: 1.0.0
 Description: Save All Entries from Enfold Forms
 Author: Christie Wood
-Author URI: https://launchsnap.com
+Author URI: https://christiemade.com
+License: GPL v2 - http://www.gnu.org/licenses/old-licenses/gpl-2.0.html
 */
 
 // If this file is called directly, abort.
 if ( ! defined( 'WPINC' ) ) {
 	die;
-}
-
-if(!defined('LSE_TEXT_DOMAIN')){
-	define('LSE_TEXT_DOMAIN','launchsnap-db-for-enfold');
 }
 
 define('LSE_DATA_ENTRY_TABLE_NAME', $wpdb->prefix.'ecf');

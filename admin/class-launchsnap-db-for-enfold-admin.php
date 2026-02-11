@@ -5,7 +5,7 @@ use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 /**
  * The admin-specific functionality of the plugin.
  *
- * @link       https://launchsnap.com
+ * @link       https://christiemade.com
  * @since      1.0.0
  *
  * @package    Launchsnap_Db
@@ -101,12 +101,12 @@ class Launchsnap_Db_Admin
 
 		?><!-- Display Export functionality button here-->
 		<select id="vsz-cf7-export" name="vsz-cf7-export" data-fid="<?php echo esc_html($fid); ?>">
-			<option value="-1"><?php esc_html_e('Export to...', LSE_TEXT_DOMAIN); ?></option>
-			<option value="csv"><?php esc_html_e('CSV', LSE_TEXT_DOMAIN); ?></option>
-			<option value="excel"><?php esc_html_e('Excel', LSE_TEXT_DOMAIN); ?></option>
+			<option value="-1"><?php esc_html_e('Export to...', 'launchsnap-db-for-enfold'); ?></option>
+			<option value="csv"><?php esc_html_e('CSV', 'launchsnap-db-for-enfold'); ?></option>
+			<option value="excel"><?php esc_html_e('Excel', 'launchsnap-db-for-enfold'); ?></option>
 		</select>
-		<button class="button action" title="<?php esc_html_e('Export', LSE_TEXT_DOMAIN); ?>" type="submit"
-			name="btn_export"><?php esc_html_e('Export', LSE_TEXT_DOMAIN); ?></button>
+		<button class="button action" title="<?php esc_html_e('Export', 'launchsnap-db-for-enfold'); ?>" type="submit"
+			name="btn_export"><?php esc_html_e('Export', 'launchsnap-db-for-enfold'); ?></button>
 		<?php
 	}
 
