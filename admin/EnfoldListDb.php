@@ -10,18 +10,28 @@ class ECF_ListDb {
 			return $this->results = $results;
     }
 
-    function postTitle($fid) {
+    public function postTitle( $fid ) {
       global $wpdb;
 
-			$results = $wpdb->get_results("SELECT *
-        FROM {$wpdb->prefix}ecf
-        WHERE page = (
+      $fid = absint( $fid );
+
+      if ( 0 === $fid ) {
+        return $this->results = array();
+      }
+
+      $results = $wpdb->get_results(
+        $wpdb->prepare(
+          "SELECT * FROM {$wpdb->prefix}ecf
+          WHERE page = (
             SELECT page
             FROM {$wpdb->prefix}ecf
-            WHERE id = $fid
-        )");
+            WHERE id = %d
+          )",
+          $fid
+        )
+      );
 
-			return $this->results = $results;
+      return $this->results = $results;
     }
 }
 ?>
