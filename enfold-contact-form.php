@@ -17,10 +17,6 @@ if ( ! defined( 'WPINC' ) ) {
 	die;
 }
 
-define('LSE_DATA_ENTRY_TABLE_NAME', $wpdb->prefix.'ecf');
-
-require_once(ABSPATH . 'wp-admin/includes/file.php');
-
 function ecf_activated() {
 	global $wpdb;
 
@@ -40,13 +36,6 @@ function ecf_activated() {
 	dbDelta( $sql );
 }
 
-function ecf_deactivate()
-{
-	global $wpdb;
-	/**
-	* @deactivated_plugin
-	*/
-}
 function ecf_uninstall() {
 	global $wpdb;
 
@@ -55,7 +44,6 @@ function ecf_uninstall() {
 }
 
 register_activation_hook(	__FILE__,	'ecf_activated'  );
-register_deactivation_hook(	__FILE__,	'ecf_deactivate' );
 register_uninstall_hook(	__FILE__,	'ecf_uninstall'  );
 
 include 'admin/EnfoldListDb.php';
