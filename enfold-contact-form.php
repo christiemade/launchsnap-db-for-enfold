@@ -1,7 +1,7 @@
 <?php
 /*
 Plugin Name: LaunchSnap Form DB for Enfold
-Version: 1.0.0
+Version: 1.0.1
 Description: Save All Entries from Enfold Forms
 Author: Christie Wood
 Author URI: https://christiemade.com
@@ -73,7 +73,7 @@ require plugin_dir_path( __FILE__ ) . 'includes/class-launchsnap-db-for-enfold.p
  * then kicking off the plugin from this point in the file does
  * not affect the page life cycle.
  *
- * @since    1.0.0
+ * @since    1.0.1
  */
 function run_launchsnap_db() {
 
