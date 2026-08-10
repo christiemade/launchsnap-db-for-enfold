@@ -1,11 +1,12 @@
 <?php
 /*
-Plugin Name: Launchsnap DB for Enfold
+Plugin Name: LaunchSnap Form DB for Enfold
 Version: 1.0.0
 Description: Save All Entries from Enfold Forms
 Author: Christie Wood
 Author URI: https://christiemade.com
-License: GPL v2 - http://www.gnu.org/licenses/old-licenses/gpl-2.0.html
+License: GPLv2 or later
+License URI: https://www.gnu.org/licenses/gpl-2.0.html
 */
 
 // If this file is called directly, abort.
@@ -150,7 +151,7 @@ function ecf_cf7_saveFormData($form_elements)
 	$contact_value = base64_encode(maybe_serialize($contact_value));
 
 	$contact_time = current_time( 'mysql' );
-  
+
   // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery -- Form submissions are stored in the plugin-owned custom table.
 	$wpdb->insert(
     $wpdb->prefix . 'ecf',
