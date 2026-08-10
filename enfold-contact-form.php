@@ -3,6 +3,9 @@
 Plugin Name: LaunchSnap Form DB for Enfold
 Version: 1.0.1
 Description: Save All Entries from Enfold Forms
+Requires at least: 5.3
+Requires PHP: 8.1
+Text Domain: launchsnap-db-for-enfold
 Author: Christie Wood
 Author URI: https://christiemade.com
 License: GPLv2 or later
@@ -152,7 +155,7 @@ function ecf_cf7_saveFormData($form_elements)
   $page_title = $contact_form
     ? $contact_form->title()
     : __( 'Contact Form 7 submission', 'launchsnap-db-for-enfold' );
-    
+
 	$contact_value = base64_encode(maybe_serialize($contact_value));
 
 	$contact_time = current_time( 'mysql' );
