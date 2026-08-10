@@ -10,8 +10,12 @@ function lse_get_the_form_list($fid = '')
 
 	global $wpdb;
 
-	$select = "SELECT page AS post_title, MIN(id) AS ID FROM wp_ecf GROUP BY page;";
-	$result = $wpdb->get_results($select, ARRAY_A);
+	$result = $wpdb->get_results(
+    "SELECT page AS post_title, MIN(id) AS ID
+    FROM {$wpdb->prefix}ecf
+    GROUP BY page",
+    ARRAY_A
+  );
 
 	if (sizeof($result)) {
 		// New function Added to sort the array by CF7 Name
