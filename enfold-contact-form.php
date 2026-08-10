@@ -147,7 +147,12 @@ function ecf_cf7_saveFormData($form_elements)
 		$contact_value[$key] = $element;
 	}
 
-	$page_title = $contact_value['page_title'];
+	$contact_form = wpcf7_get_current_contact_form();
+
+  $page_title = $contact_form
+    ? $contact_form->title()
+    : __( 'Contact Form 7 submission', 'launchsnap-db-for-enfold' );
+    
 	$contact_value = base64_encode(maybe_serialize($contact_value));
 
 	$contact_time = current_time( 'mysql' );
