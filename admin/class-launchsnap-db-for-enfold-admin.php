@@ -115,19 +115,46 @@ class Launchsnap_Db_Admin
 	 */
 	public function lse_save_setting_callback()
 	{
+    if ( ! isset( $_POST['_wpnonce'] ) ) {
+      return;
+    }
+
+    $nonce = sanitize_text_field( wp_unslash( $_POST['_wpnonce'] ) );
+
+    if ( ! wp_verify_nonce( $nonce, 'lse-action-nonce' ) ) {
+      return;
+    }
+
+    if ( ! current_user_can( 'manage_options' ) ) {
+      return;
+    }
+
 		global $wpdb;
 
 		//Setup export functionality here
 		if (isset($_POST['btn_export'])) {
 
 			//Get form ID
-			$fid = (int) sanitize_text_field($_POST['fid']);
+			$fid = isset( $_POST['fid'] )
+        ? absint( wp_unslash( $_POST['fid'] ) )
+        : 0;
+
+      if ( 0 === $fid ) {
+        return;
+      }
 
 			//Get export id related information
 			$ids_export = ((isset($_POST['del_id']) && !empty($_POST['del_id'])) ? implode(',', array_map('intval', $_POST['del_id'])) : '');
 
 			///Get export type related information
-			$type = sanitize_text_field($_POST['vsz-cf7-export']);
+			$type = isset( $_POST['vsz-cf7-export'] )
+        ? sanitize_key( wp_unslash( $_POST['vsz-cf7-export'] ) )
+        : '';
+
+      if ( ! in_array( $type, array( 'csv', 'excel' ), true ) ) {
+        return;
+      }
+
 			//Check type name and execute type related CASE
 			switch ($type) {
 				case 'csv':
@@ -160,7 +187,7 @@ function lse_export_to_csv($fid, $ids_export = '')
 	}
 
 	//Get nonce value
-	$nonce = sanitize_text_field($_POST['_wpnonce']);
+	$nonce = sanitize_text_field( wp_unslash( $_POST['_wpnonce'] ) );
 
 	//Verify nonce value
 	if (!wp_verify_nonce($nonce, 'lse-action-nonce')) {
@@ -172,7 +199,6 @@ function lse_export_to_csv($fid, $ids_export = '')
 		return esc_html('You do not have the permission to export the data');
 	}
 
-	error_log("Did we make it to the CSV export function with ".$fid. "?");
 	$fields = lse_get_db_fields($fid);
 
 	//get current form title
@@ -189,7 +215,7 @@ function lse_export_to_csv($fid, $ids_export = '')
 		header('Content-Type: text/csv; charset=UTF-8');
 		header('Content-Disposition: attachment;filename="' . $form_title . '.csv";');
 		$fp = fopen('php://output', 'w');
-		fputs($fp, "\xEF\xBB\xBF");
+		echo "\xEF\xBB\xBF";
 		fputcsv($fp, array_values(array_map('sanitize_text_field', $fields)),",","\"","\\");
 		foreach ($data_sorted as $k => $v) {
 			$temp_value = array();
@@ -199,7 +225,6 @@ function lse_export_to_csv($fid, $ids_export = '')
 			fputcsv($fp, $temp_value,",","\"","\\");
 		}
 
-		fclose($fp);
 		exit();
 	}
 }
@@ -219,7 +244,8 @@ function lse_export_to_excel($fid, $ids_export)
 	}
 
 	//Get nonce value
-	$nonce = sanitize_text_field($_POST['_wpnonce']);
+  $nonce = sanitize_text_field( wp_unslash( $_POST['_wpnonce'] ) );
+
 	//Verify nonce value
 	if (!wp_verify_nonce($nonce, 'lse-action-nonce')) {
 		return esc_html('You do not have the permission to export the data');
@@ -298,24 +324,43 @@ function lse_export_to_excel($fid, $ids_export)
 
 
 // Setup export query here
-function create_lse_export_query($fid, $ids_export)
-{
-
+function create_lse_export_query( $fid, $ids_export = '' ) {
 	global $wpdb;
-	$fid = intval($fid);
-	$page_title = lse_get_the_title($fid);
 
-	$query = "SELECT * FROM `" . LSE_DATA_ENTRY_TABLE_NAME . "` WHERE `page` = '" . $page_title . "' AND id IN(
-						SELECT * FROM (
-							SELECT id FROM `" . LSE_DATA_ENTRY_TABLE_NAME . "` WHERE 1 = 1 AND `page` = '" . $page_title . "' " . ((!empty($ids_export)) ? " AND id IN(" . $ids_export . ")" : '') . "
-								GROUP BY `id` ORDER BY id ASC
-							)
-						temp_table)
-						ORDER BY id ASC";
+	$page_title = lse_get_the_title( absint( $fid ) );
 
-	//Execuste query
-	$data = $wpdb->get_results($query);
+	if ( empty( $page_title ) ) {
+		return array();
+	}
 
-	//Return result set
-	return $data;
-}//Close export query function
+	$ids = array_filter(
+		array_map(
+			'absint',
+			explode( ',', (string) $ids_export )
+		)
+	);
+
+	if ( empty( $ids ) ) {
+		return $wpdb->get_results(
+			$wpdb->prepare(
+				"SELECT * FROM {$wpdb->prefix}ecf
+				WHERE page = %s
+				ORDER BY id ASC",
+				$page_title
+			)
+		);
+	}
+
+	$ids_csv = implode( ',', $ids );
+
+	return $wpdb->get_results(
+		$wpdb->prepare(
+			"SELECT * FROM {$wpdb->prefix}ecf
+			WHERE page = %s
+			AND FIND_IN_SET( id, %s )
+			ORDER BY id ASC",
+			$page_title,
+			$ids_csv
+		)
+	);
+}
