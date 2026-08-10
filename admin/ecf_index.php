@@ -12,7 +12,6 @@ include_once( ABSPATH . 'wp-admin/includes/plugin.php' );
 function ecf_index(){  
   global $wpdb;
 	wp_enqueue_script('launchsnap_db_admin_js');
-	$table = $wpdb->prefix . 'ecf';
 
 	//Get all existing contact form list
 	$form_list = lse_get_the_form_list();
@@ -110,13 +109,7 @@ function ecf_index(){
 								 esc_html( $total,'launchsnap-db-for-enfold') . ' ' . esc_html('items')) ?></span>
 
 								<span class="pagination-links"><?php
-									//Setup pagination structure
-									// Copy the current query vars
-									$query_args = $_GET;
-
-									// Overwrite 'cpage' with the pagination placeholder
-									$query_args['cpage'] = '%#%';
-
+									// Setup pagination structure
 									// Build the base URL with all preserved args
 									$base = add_query_arg( 'cpage', '%#%', admin_url( 'admin.php?page=form-contacts' ) );
 
