@@ -17,13 +17,6 @@ function ecf_index(){
 	//Get all existing contact form list
 	$form_list = lse_get_the_form_list();
 	$fid = '';
-	
-	$nonce = wp_create_nonce('lse-action-nonce');
-
-	if(!wp_verify_nonce( $nonce, 'lse-action-nonce')){
-		echo esc_html('You have no permission to access this page');
-		return;
-	}
 
 	//Get selected Form Page Id value
 	if(isset($_GET['fp_id']) && !empty($_GET['fp_id'])){
