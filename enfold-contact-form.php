@@ -18,16 +18,24 @@ define('LSE_DATA_ENTRY_TABLE_NAME', $wpdb->prefix.'ecf');
 require_once(ABSPATH . 'wp-admin/includes/file.php');
 
 function ecf_activated() {
+	global $wpdb;
 
-   	global $wpdb;
-  	 $wpdb->prefix . 'ecf';
+	require_once ABSPATH . 'wp-admin/includes/upgrade.php';
 
-		if($wpdb->get_var("show tables like '{$wpdb->prefix}ecf'") != $wpdb->prefix . 'ecf')
-		{
-			$wpdb->get_results("CREATE TABLE {$wpdb->prefix}ecf ( id mediumint(9) NOT NULL PRIMARY KEY AUTO_INCREMENT, page varchar(512) NOT NULL, complete BLOB, contact_time TIMESTAMP) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci");
-		}
+	$table_name      = $wpdb->prefix . 'ecf';
+	$charset_collate = $wpdb->get_charset_collate();
 
+	$sql = "CREATE TABLE {$table_name} (
+		id mediumint(9) unsigned NOT NULL AUTO_INCREMENT,
+		page varchar(512) NOT NULL,
+		complete longblob,
+		contact_time datetime NOT NULL,
+		PRIMARY KEY  (id)
+	) {$charset_collate};";
+
+	dbDelta( $sql );
 }
+
 function ecf_deactivate()
 {
 	global $wpdb;
@@ -35,11 +43,13 @@ function ecf_deactivate()
 	* @deactivated_plugin
 	*/
 }
-function ecf_uninstall()
-{
+function ecf_uninstall() {
 	global $wpdb;
-	$wpdb->get_results("DROP TABLE {$wpdb->prefix}ecf");
+
+	// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.SchemaChange -- Uninstall must remove the plugin-owned custom table.
+	$wpdb->query( "DROP TABLE IF EXISTS {$wpdb->prefix}ecf" );
 }
+
 register_activation_hook(	__FILE__,	'ecf_activated'  );
 register_deactivation_hook(	__FILE__,	'ecf_deactivate' );
 register_uninstall_hook(	__FILE__,	'ecf_uninstall'  );
@@ -104,8 +114,21 @@ function ecf_saveFormData($data, $new_post, $form_params, $avia_form)
 	}
 	$contact_value = base64_encode(maybe_serialize($contact_value));
 
-	$contact_time = date('Y-m-d H:i:s e');
-	$wpdb->get_results("INSERT INTO {$wpdb->prefix}ecf SET page='{$page_title}', complete='{$contact_value}', contact_time ='{$contact_time}'");
+	$contact_time = current_time( 'mysql' );
+	// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery -- Form submissions are stored in the plugin-owned custom table.
+  $wpdb->insert(
+    $wpdb->prefix . 'ecf',
+    array(
+      'page'         => $page_title,
+      'complete'     => $contact_value,
+      'contact_time' => $contact_time,
+    ),
+    array(
+      '%s',
+      '%s',
+      '%s',
+    )
+  );
 
   return true;
 }
@@ -126,8 +149,22 @@ function ecf_cf7_saveFormData($form_elements)
 	$page_title = $contact_value['page_title'];
 	$contact_value = base64_encode(maybe_serialize($contact_value));
 
-	$contact_time = date('Y-m-d H:i:s e');
-	$wpdb->get_results("INSERT INTO {$wpdb->prefix}ecf SET page='{$page_title}', complete='{$contact_value}', contact_time ='{$contact_time}'");
+	$contact_time = current_time( 'mysql' );
+  
+  // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery -- Form submissions are stored in the plugin-owned custom table.
+	$wpdb->insert(
+    $wpdb->prefix . 'ecf',
+    array(
+      'page'         => $page_title,
+      'complete'     => $contact_value,
+      'contact_time' => $contact_time,
+    ),
+    array(
+      '%s',
+      '%s',
+      '%s',
+    )
+  );
 
   return $form_elements;
 }
