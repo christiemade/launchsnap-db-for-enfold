@@ -217,7 +217,15 @@ function lse_export_to_csv($fid, $ids_export = '')
 
 		//Generate CSV file
 		header('Content-Type: text/csv; charset=UTF-8');
-		header('Content-Disposition: attachment;filename="' . $form_title . '.csv";');
+		$filename = sanitize_file_name( $form_title );
+
+    if ( '' === $filename ) {
+      $filename = 'form-entries';
+    }
+
+    $filename .= '.csv';
+
+    header( 'Content-Disposition: attachment; filename="' . $filename . '"' );
 		$fp = fopen('php://output', 'w');
 		echo "\xEF\xBB\xBF";
 		fputcsv($fp, array_values(array_map('sanitize_text_field', $fields)),",","\"","\\");
