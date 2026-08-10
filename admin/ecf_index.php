@@ -27,12 +27,18 @@ function ecf_index(){
 
 	//Get selected Form Page Id value
 	if(isset($_GET['fp_id']) && !empty($_GET['fp_id'])){
-		$fid = intval(sanitize_text_field($_GET['fp_id']));
+		$fid = absint( wp_unslash( $_GET['fp_id'] ) );
 		$results = $GLOBALS['EnfoldListDb']->postTitle($fid);
 	} else {
 		$results = $GLOBALS['EnfoldListDb']->all(); 
-		error_log("SELECT id FROM $table WHERE page = '".$results[0]->page."'");
-		$fid = $wpdb->get_var( "SELECT id FROM $table WHERE page = '".$results[0]->page."'" );
+		if ( ! empty( $results ) ) {
+      $fid = (int) $wpdb->get_var(
+        $wpdb->prepare(
+          "SELECT id FROM {$wpdb->prefix}ecf WHERE page = %s ORDER BY id ASC LIMIT 1",
+          $results[0]->page
+        )
+      );
+    }
 	}
 
 	//Get all form names which entry store in DB
@@ -75,8 +81,8 @@ function ecf_index(){
 	$items_per_page = 30;
 
 	//Get current page information from  query
-	$page = isset($_REQUEST['cpage']) && !empty($_REQUEST['cpage']) 
-    ? absint(sanitize_text_field($_REQUEST['cpage'])) 
+	$page = isset( $_GET['cpage'] )
+    ? max( 1, absint( wp_unslash( $_GET['cpage'] ) ) )
     : 1;
 
 	//Setup offset related value here
@@ -130,7 +136,7 @@ function ecf_index(){
 										'current'   => $page,
 									) );
 
-									echo $nav;
+									echo wp_kses_post( $nav );
 
 
 								?></span>
@@ -195,7 +201,11 @@ function ecf_index(){
 				<input type="hidden" name="cpage" value="<?php echo intval($page);?>" id="cpage">
 				<input type="hidden" name="totalPage" value="" id="totalPage">
 				<?php $list_nonce = wp_create_nonce( 'lse-form-list-nonce' ); ?>
-				<input type="hidden" name="lse_form_list_nonce"  value="<?php esc_html_e($list_nonce,'launchsnap-db-for-enfold'); ?>" />
+				<input
+          type="hidden"
+          name="lse_form_list_nonce"
+          value="<?php echo esc_attr( $list_nonce ); ?>"
+        >
 				
 			</form>
 			<?php else: ?>
