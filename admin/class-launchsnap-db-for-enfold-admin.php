@@ -163,10 +163,10 @@ class Launchsnap_Db_Admin
 			//Check type name and execute type related CASE
 			switch ($type) {
 				case 'csv':
-					lse_export_to_csv($fid, $ids_export);
+					launchsnap_db_export_csv($fid, $ids_export);
 					break;
 				case 'excel':
-					lse_export_to_excel($fid, $ids_export);
+					launchsnap_db_export_excel($fid, $ids_export);
 					break;
 				case '-1':
 					return;
@@ -192,7 +192,7 @@ function launchsnap_db_safe_csv_value( $value ) {
 /**
  * Generate CSV file here
  */
-function lse_export_to_csv($fid, $ids_export = '')
+function launchsnap_db_export_csv($fid, $ids_export = '')
 {
 
 	global $wpdb;
@@ -220,7 +220,7 @@ function lse_export_to_csv($fid, $ids_export = '')
 	$form_title = launchsnap_db_get_entry_title($fid);
 
 	//Get export data
-	$data = create_lse_export_query($fid, $ids_export);
+	$data = launchsnap_db_create_export_query($fid, $ids_export);
 
 	if (!empty($data)) {
 		//Setup export data
@@ -257,7 +257,7 @@ function lse_export_to_csv($fid, $ids_export = '')
 /**
  * Generate excel file here
  */
-function lse_export_to_excel($fid, $ids_export)
+function launchsnap_db_export_excel($fid, $ids_export)
 {
 
 	global $wpdb;
@@ -287,13 +287,13 @@ function lse_export_to_excel($fid, $ids_export)
 	$form_title = launchsnap_db_get_entry_title($fid);
 
 	//Get export data
-	$data = create_lse_export_query($fid, $ids_export);
+	$data = launchsnap_db_create_export_query($fid, $ids_export);
 	if (!empty($data)) {
 		//Setup export data
 		$data_sorted = wp_unslash(launchsnap_db_sort_entry_data($data));
 
 		// Convert number to Excel column letter (1 -> A, 2 -> B, etc.)
-		function colLetter($c)
+		function launchsnap_db_column_letter($c)
 		{
 			$c = intval($c);
 			if ($c <= 0)
@@ -313,7 +313,7 @@ function lse_export_to_excel($fid, $ids_export)
 		// 1. Insert headers into first row
 		$col = 1;
 		foreach ($arrHeader as $colName) {
-			$cell = colLetter($col) . '1';
+			$cell = launchsnap_db_column_letter($col) . '1';
 			$sheet->setCellValueExplicit(
         $cell,
         (string) $colName,
@@ -328,7 +328,7 @@ function lse_export_to_excel($fid, $ids_export)
 			$col = 1;
 			foreach ($fields as $key => $fieldName) {
 				$colVal = isset($entry[$key]) ? html_entity_decode($entry[$key]) : '';
-				$cell = colLetter($col) . $row;
+				$cell = launchsnap_db_column_letter($col) . $row;
 				$sheet->setCellValueExplicit(
           $cell,
           (string) $colVal,
@@ -356,7 +356,7 @@ function lse_export_to_excel($fid, $ids_export)
 
 
 // Setup export query here
-function create_lse_export_query( $fid, $ids_export = '' ) {
+function launchsnap_db_create_export_query( $fid, $ids_export = '' ) {
 	global $wpdb;
 
 	$page_title = launchsnap_db_get_entry_title( absint( $fid ) );
