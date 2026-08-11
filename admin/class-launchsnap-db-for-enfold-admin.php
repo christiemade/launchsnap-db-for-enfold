@@ -92,11 +92,11 @@ class Launchsnap_Db_Admin
 
 
 	/**
-	 * Action callback function of 'lse_after_bulkaction_btn'
+	 * Action callback function of 'launchsnap_db_after_bulk_action_button'
 	 * Populate Export option box on form listing screen
 	 * @param $fid
 	 */
-	function lse_after_bulkaction_btn_callback($fid)
+	function launchsnap_db_after_bulk_action_button($fid)
 	{
 		$fid = (int) $fid;
 		if (empty($fid)) {
@@ -117,7 +117,7 @@ class Launchsnap_Db_Admin
 	/**
 	 * Export options callback
 	 */
-	public function lse_save_setting_callback()
+	public function handle_export_request()
 	{
     if ( ! isset( $_POST['_wpnonce'] ) ) {
       return;

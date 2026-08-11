@@ -102,7 +102,7 @@ function launchsnap_db_admin_page(){
 		
 							<?php
 							//Display Export button option values
-							do_action('lse_after_bulkaction_btn', $fid);
+							do_action('launchsnap_db_after_bulk_action_button', $fid);
 							?><div class="tablenav-pages">
 								<span class="displaying-num"><?php echo (($total == 1) ?
 								'1 ' . esc_html('item','launchsnap-db-for-enfold') :

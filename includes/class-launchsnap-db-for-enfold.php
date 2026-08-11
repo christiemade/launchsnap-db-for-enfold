@@ -135,10 +135,10 @@ class Launchsnap_Db {
 		$this->loader->add_action('admin_menu', $plugin_admin, 'ls_enfold_plugin_menu',9);
 
 		//Display export option box throw this action
-		$this->loader->add_action('lse_after_bulkaction_btn', $plugin_admin,'lse_after_bulkaction_btn_callback', 20, 2);
+		$this->loader->add_action('render_export_controls', $plugin_admin,'render_export_controls', 20, 1);
 
 		//Save all other additionals values here
-		$this->loader->add_action('admin_init', $plugin_admin,'lse_save_setting_callback');
+		$this->loader->add_action('admin_init', $plugin_admin,'');
 
 		//Create our own class for forms
 		//$this->loader->add_action('after_setup_theme', $plugin_admin,'lse_form_class',20);
