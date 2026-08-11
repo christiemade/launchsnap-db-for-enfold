@@ -92,11 +92,11 @@ class Launchsnap_Db_Admin
 
 
 	/**
-	 * Action callback function of 'launchsnap_db_after_bulk_action_button'
+	 * Action callback function of 'render_export_controls'
 	 * Populate Export option box on form listing screen
 	 * @param $fid
 	 */
-	function launchsnap_db_after_bulk_action_button($fid)
+	function render_export_controls($fid)
 	{
 		$fid = (int) $fid;
 		if (empty($fid)) {
