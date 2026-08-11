@@ -79,16 +79,15 @@ class Launchsnap_Db_Admin
 	 */
 	function ls_enfold_plugin_menu()
 	{
-
-		///// Menu pages for contact form DB
-		$user_id = get_current_user_id();
-		$subject = new WP_User($user_id);
-
-		//check current user view capability access
-		if (in_array("administrator", $subject->roles, true)) {
-			add_menu_page("Form Entries", "Form Entries", 'manage_options', 'form-contacts', 'launchsnap_db_admin_page', 'dashicons-visibility', 45);
-
-		}
+		add_menu_page(
+      __( 'Form Entries', 'launchsnap-db-for-enfold' ),
+      __( 'Form Entries', 'launchsnap-db-for-enfold' ),
+      'manage_options',
+      'form-contacts',
+      'launchsnap_db_admin_page',
+      'dashicons-visibility',
+      45
+    );
 	}
 
 
