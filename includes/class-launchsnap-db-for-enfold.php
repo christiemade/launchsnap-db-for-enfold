@@ -135,7 +135,7 @@ class Launchsnap_Db {
 		$this->loader->add_action('admin_menu', $plugin_admin, 'ls_enfold_plugin_menu',9);
 
 		//Display export option box throw this action
-		$this->loader->add_action('render_export_controls', $plugin_admin,'render_export_controls', 20, 1);
+		$this->loader->add_action('launchsnap_db_after_bulk_action_button', $plugin_admin,'render_export_controls', 20, 1);
 
 		//Save all other additionals values here
 		$this->loader->add_action('admin_init', $plugin_admin,'');
