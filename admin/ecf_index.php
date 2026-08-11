@@ -14,7 +14,7 @@ function ecf_index(){
 	wp_enqueue_script('launchsnap_db_admin_js');
 
 	//Get all existing contact form list
-	$form_list = lse_get_the_form_list();
+	$form_list = launchsnap_db_get_form_list();
 	$fid = '';
 
 	//Get selected Form Page Id value
