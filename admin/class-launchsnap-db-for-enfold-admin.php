@@ -148,7 +148,18 @@ class Launchsnap_Db_Admin
       }
 
 			//Get export id related information
-			$ids_export = ((isset($_POST['del_id']) && !empty($_POST['del_id'])) ? implode(',', array_map('intval', $_POST['del_id'])) : '');
+			$ids_export = '';
+
+      if ( isset( $_POST['del_id'] ) && is_array( $_POST['del_id'] ) ) {
+        $selected_ids = array_filter(
+          array_map(
+            'absint',
+            wp_unslash( $_POST['del_id'] )
+          )
+        );
+
+        $ids_export = implode( ',', $selected_ids );
+      }
 
 			///Get export type related information
 			$type = isset( $_POST['vsz-cf7-export'] )
