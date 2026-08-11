@@ -17,7 +17,7 @@ if ( ! defined( 'WPINC' ) ) {
 	die;
 }
 
-function ecf_activated() {
+function launchsnap_db_activate() {
 	global $wpdb;
 
 	require_once ABSPATH . 'wp-admin/includes/upgrade.php';
@@ -36,15 +36,15 @@ function ecf_activated() {
 	dbDelta( $sql );
 }
 
-function ecf_uninstall() {
+function launchsnap_db_uninstall() {
 	global $wpdb;
 
 	// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.SchemaChange -- Uninstall must remove the plugin-owned custom table.
 	$wpdb->query( "DROP TABLE IF EXISTS {$wpdb->prefix}ecf" );
 }
 
-register_activation_hook(	__FILE__,	'ecf_activated'  );
-register_uninstall_hook(	__FILE__,	'ecf_uninstall'  );
+register_activation_hook(	__FILE__,	'launchsnap_db_activate'  );
+register_uninstall_hook(	__FILE__,	'launchsnap_db_uninstall'  );
 
 include 'admin/EnfoldListDb.php';
 $EnfoldListDb = new ECF_ListDb();
@@ -76,10 +76,10 @@ run_launchsnap_db();
 
 add_theme_support('avia_template_builder_custom_css');
 
-add_filter( 'wpcf7_posted_data', 'ecf_cf7_saveFormData' );
-add_filter('avf_form_send', 'ecf_saveFormData', 10, 4);
+add_filter( 'wpcf7_posted_data', 'launchsnap_db_save_cf7_form_data' );
+add_filter('avf_form_send', 'launchsnap_db_save_enfold_form_data', 10, 4);
 
-function ecf_saveFormData($data, $new_post, $form_params, $avia_form)
+function launchsnap_db_save_enfold_form_data($data, $new_post, $form_params, $avia_form)
 {
 	global $wpdb;
 
@@ -128,7 +128,7 @@ function ecf_saveFormData($data, $new_post, $form_params, $avia_form)
 
 
 // Save submissions from CF7
-function ecf_cf7_saveFormData($form_elements)
+function launchsnap_db_save_cf7_form_data($form_elements)
 {
 	global $wpdb;
 	$contact_value = array();
