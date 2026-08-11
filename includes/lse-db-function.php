@@ -5,7 +5,7 @@ if (!defined('ABSPATH')) {
 }
 
 //Get all contact form list here
-function lse_get_the_form_list($fid = '')
+function launchsnap_db_get_form_list($fid = '')
 {
 
 	global $wpdb;
@@ -19,7 +19,7 @@ function lse_get_the_form_list($fid = '')
 
 	if (sizeof($result)) {
 		// New function Added to sort the array by CF7 Name
-		usort($result, "cmp_sort_post_title");
+		usort($result, "launchsnap_db_compare_form_titles");
 	}
 
 	return $result;
@@ -28,7 +28,7 @@ function lse_get_the_form_list($fid = '')
 /*
  * Sorting the contact forms to asc order by CF7 name
  */
-function cmp_sort_post_title($a, $b)
+function launchsnap_db_compare_form_titles($a, $b)
 {
 	//return $a->name > $b->name;
 	return strcmp($a['post_title'], $b['post_title']);
@@ -38,7 +38,7 @@ function cmp_sort_post_title($a, $b)
 /*
  * $data: rows from database
  */
-function lse_sortdata($data)
+function launchsnap_db_sort_entry_data($data)
 {
 	$data_sorted = array();
 	//Set submitted id wise form information
@@ -57,7 +57,7 @@ function lse_sortdata($data)
 	return $data_sorted;
 }
 
-function lse_get_the_title($fid) {
+function launchsnap_db_get_entry_title($fid) {
 	global $wpdb;
 	$fid = (int) $fid;
 	$page_title = $wpdb->get_var($wpdb->prepare("SELECT `page` FROM {$wpdb->prefix}ecf WHERE id = %d", $fid));
@@ -65,12 +65,12 @@ function lse_get_the_title($fid) {
 }
 
 // Pull fields out of form settings
-function lse_get_db_fields($fid, $filter = true)
+function launchsnap_db_get_form_fields($fid, $filter = true)
 {
 
 	global $wpdb;
 	$fid = (int) $fid;
-	$page_title = lse_get_the_title($fid);
+	$page_title = launchsnap_db_get_entry_title($fid);
 	$sql = $wpdb->get_results($wpdb->prepare("SELECT `complete`, `contact_time` FROM {$wpdb->prefix}ecf WHERE page = %s", $page_title));
 	$data = $sql;
 	//Set each field value in array
