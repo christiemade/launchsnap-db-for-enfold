@@ -178,6 +178,16 @@ class Launchsnap_Db_Admin
 	}//Close admin_init hook function
 }
 
+function launchsnap_db_safe_csv_value( $value ) {
+	$value = (string) $value;
+
+	if ( preg_match( '/^[=+\-@\t\r]/', ltrim( $value ) ) ) {
+		return "'" . $value;
+	}
+
+	return $value;
+}
+
 /**
  * Generate CSV file here
  */
@@ -232,7 +242,9 @@ function lse_export_to_csv($fid, $ids_export = '')
 		foreach ($data_sorted as $k => $v) {
 			$temp_value = array();
 			foreach ($fields as $k2 => $v2) {
-				$temp_value[] = ((isset($v[$k2])) ? html_entity_decode($v[$k2]) : '');
+				$temp_value[] = isset( $v[$k2] )
+          ? launchsnap_db_safe_csv_value( html_entity_decode( $v[$k2] ) )
+          : '';
 			}
 			fputcsv($fp, $temp_value,",","\"","\\");
 		}
