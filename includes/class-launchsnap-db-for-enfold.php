@@ -138,7 +138,7 @@ class Launchsnap_Db {
 		$this->loader->add_action('launchsnap_db_after_bulk_action_button', $plugin_admin,'render_export_controls', 20, 1);
 
 		//Save all other additionals values here
-		$this->loader->add_action('admin_init', $plugin_admin,'');
+		$this->loader->add_action('admin_init', $plugin_admin,'handle_export_request');
 
 		//Create our own class for forms
 		//$this->loader->add_action('after_setup_theme', $plugin_admin,'lse_form_class',20);
