@@ -186,13 +186,6 @@ function launchsnap_db_admin_page(){
 
 				<input type="hidden" name="cpage" value="<?php echo intval($page);?>" id="cpage">
 				<input type="hidden" name="totalPage" value="" id="totalPage">
-				<?php $list_nonce = wp_create_nonce( 'lse-form-list-nonce' ); ?>
-				<input
-          type="hidden"
-          name="lse_form_list_nonce"
-          value="<?php echo esc_attr( $list_nonce ); ?>"
-        >
-				
 			</form>
 			<?php else: ?>
 					No entries.
