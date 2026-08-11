@@ -306,7 +306,6 @@ function lse_export_to_excel($fid, $ids_export)
 			}
 			return $letter;
 		}
-
 		$arrHeader = array_values(array_map('sanitize_text_field', $fields));
 		$spreadsheet = new Spreadsheet();
 		$sheet = $spreadsheet->getActiveSheet();
