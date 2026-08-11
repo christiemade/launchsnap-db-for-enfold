@@ -1,6 +1,7 @@
 <?php
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+use PhpOffice\PhpSpreadsheet\Cell\DataType;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -314,7 +315,11 @@ function lse_export_to_excel($fid, $ids_export)
 		$col = 1;
 		foreach ($arrHeader as $colName) {
 			$cell = colLetter($col) . '1';
-			$sheet->setCellValue($cell, $colName);
+			$sheet->setCellValueExplicit(
+        $cell,
+        (string) $colName,
+        DataType::TYPE_STRING
+      );
 			$col++;
 		}
 
@@ -325,7 +330,11 @@ function lse_export_to_excel($fid, $ids_export)
 			foreach ($fields as $key => $fieldName) {
 				$colVal = isset($entry[$key]) ? html_entity_decode($entry[$key]) : '';
 				$cell = colLetter($col) . $row;
-				$sheet->setCellValue($cell, $colVal);
+				$sheet->setCellValueExplicit(
+          $cell,
+          (string) $colVal,
+          DataType::TYPE_STRING
+        );
 				$col++;
 			}
 			$row++;
