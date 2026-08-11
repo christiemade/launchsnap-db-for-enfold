@@ -214,17 +214,17 @@ function lse_export_to_csv($fid, $ids_export = '')
 		return esc_html('You do not have the permission to export the data');
 	}
 
-	$fields = lse_get_db_fields($fid);
+	$fields = launchsnap_db_get_form_fields($fid);
 
 	//get current form title
-	$form_title = lse_get_the_title($fid);
+	$form_title = launchsnap_db_get_entry_title($fid);
 
 	//Get export data
 	$data = create_lse_export_query($fid, $ids_export);
 
 	if (!empty($data)) {
 		//Setup export data
-		$data_sorted = wp_unslash(lse_sortdata($data));
+		$data_sorted = wp_unslash(launchsnap_db_sort_entry_data($data));
 
 		//Generate CSV file
 		header('Content-Type: text/csv; charset=UTF-8');
@@ -281,16 +281,16 @@ function lse_export_to_excel($fid, $ids_export)
 		return esc_html('You do not have the permission to export the data');
 	}
 
-	$fields = lse_get_db_fields($fid);
+	$fields = launchsnap_db_get_form_fields($fid);
 
 	//get current form title
-	$form_title = lse_get_the_title($fid);
+	$form_title = launchsnap_db_get_entry_title($fid);
 
 	//Get export data
 	$data = create_lse_export_query($fid, $ids_export);
 	if (!empty($data)) {
 		//Setup export data
-		$data_sorted = wp_unslash(lse_sortdata($data));
+		$data_sorted = wp_unslash(launchsnap_db_sort_entry_data($data));
 
 		// Convert number to Excel column letter (1 -> A, 2 -> B, etc.)
 		function colLetter($c)
@@ -360,7 +360,7 @@ function lse_export_to_excel($fid, $ids_export)
 function create_lse_export_query( $fid, $ids_export = '' ) {
 	global $wpdb;
 
-	$page_title = lse_get_the_title( absint( $fid ) );
+	$page_title = launchsnap_db_get_entry_title( absint( $fid ) );
 
 	if ( empty( $page_title ) ) {
 		return array();
