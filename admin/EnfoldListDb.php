@@ -3,7 +3,7 @@
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
-class ECF_ListDb {
+class Launchsnap_Db_List {
     public $results = array();
 
     function all() {

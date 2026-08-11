@@ -47,7 +47,7 @@ register_activation_hook(	__FILE__,	'launchsnap_db_activate'  );
 register_uninstall_hook(	__FILE__,	'launchsnap_db_uninstall'  );
 
 include 'admin/EnfoldListDb.php';
-$EnfoldListDb = new ECF_ListDb();
+$launchsnap_db_list = new Launchsnap_Db_List();
 
 include 'admin/ecf_index.php';
 
@@ -66,13 +66,13 @@ require plugin_dir_path( __FILE__ ) . 'includes/class-launchsnap-db-for-enfold.p
  *
  * @since    1.0.1
  */
-function run_launchsnap_db() {
+function launchsnap_db_run() {
 
 	$plugin = new Launchsnap_Db();
 	$plugin->run();
 
 }
-run_launchsnap_db();
+launchsnap_db_run();
 
 add_theme_support('avia_template_builder_custom_css');
 

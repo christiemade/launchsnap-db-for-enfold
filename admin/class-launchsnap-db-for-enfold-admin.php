@@ -86,7 +86,7 @@ class Launchsnap_Db_Admin
 
 		//check current user view capability access
 		if (in_array("administrator", $subject->roles, true)) {
-			add_menu_page("Form Entries", "Form Entries", 'manage_options', 'form-contacts', 'ecf_index', 'dashicons-visibility', 45);
+			add_menu_page("Form Entries", "Form Entries", 'manage_options', 'form-contacts', 'launchsnap_db_admin_page', 'dashicons-visibility', 45);
 
 		}
 	}

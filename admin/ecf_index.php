@@ -9,7 +9,7 @@ if ( !defined( 'ABSPATH' ) ) {
  */
 include_once( ABSPATH . 'wp-admin/includes/plugin.php' );
 
-function ecf_index(){  
+function launchsnap_db_admin_page(){  
   global $wpdb;
 	wp_enqueue_script('launchsnap_db_admin_js');
 
@@ -20,9 +20,9 @@ function ecf_index(){
 	//Get selected Form Page Id value
 	if(isset($_GET['fp_id']) && !empty($_GET['fp_id'])){
 		$fid = absint( wp_unslash( $_GET['fp_id'] ) );
-		$results = $GLOBALS['EnfoldListDb']->postTitle($fid);
+		$results = $GLOBALS['launchsnap_db_list']->postTitle($fid);
 	} else {
-		$results = $GLOBALS['EnfoldListDb']->all(); 
+		$results = $GLOBALS['launchsnap_db_list']->all(); 
 		if ( ! empty( $results ) ) {
       $fid = (int) $wpdb->get_var(
         $wpdb->prepare(
